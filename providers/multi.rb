@@ -43,6 +43,7 @@ action :save do
       )
     notifies :start, "service[modules-load]"
   end
+  new_resource.updated_by_last_action(true)
 end
 
 #action :load do
@@ -63,5 +64,6 @@ action :remove do
       command "modprobe -r #{name}"
     end
   end
+  new_resource.updated_by_last_action(true)
 end
 
