@@ -41,12 +41,14 @@ action :save do
     mode "0644"
     notifies :start, "service[modules-load]"
   end
+  new_resource.updated_by_last_action(true)
 end
 
 action :load do
   execute "load module" do
     command "modprobe #{new_ressource.module} #{serializeOptions}"
   end
+  new_resource.updated_by_last_action(true)
 end
 
 action :remove do
@@ -56,5 +58,6 @@ action :remove do
   execute "unload module" do
     command "modprobe -r #{new_ressource.module}"
   end
+  new_resource.updated_by_last_action(true)
 end
 
