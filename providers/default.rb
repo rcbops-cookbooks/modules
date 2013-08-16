@@ -23,7 +23,7 @@ def path
   new_resource.path ? new_resource.path : "/etc/modules-load.d/#{new_resource.name}.conf"
 end
 
-def serializeOptions
+def serialize_options
   output = ""
   if new_resource.options
     new_resource.options.each do |option, value|
@@ -35,7 +35,7 @@ end
 
 action :save do
   file path do
-    content new_resource.name + serializeOptions
+    content new_resource.name + serialize_options
     owner "root"
     group "root"
     mode "0644"
@@ -46,7 +46,7 @@ end
 
 action :load do
   execute "load module" do
-    command "modprobe #{new_ressource.module} #{serializeOptions}"
+    command "modprobe #{new_ressource.module} #{serialize_options}"
   end
   new_resource.updated_by_last_action(true)
 end
@@ -60,4 +60,3 @@ action :remove do
   end
   new_resource.updated_by_last_action(true)
 end
-
