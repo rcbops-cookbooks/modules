@@ -41,11 +41,11 @@ when "ubuntu"
       group "root"
       mode "0644"
     end
-    
+
     service "module-init-tools" do
       provider Chef::Provider::Service::Upstart
     end
-    
+
     service "modules-load" do
       provider Chef::Provider::Service::Upstart
       action [:enable, :start]
@@ -62,7 +62,7 @@ template "/etc/modules-load.d/chef-attibutes.conf" do
   owner "root"
   group "root"
   variables(
-    :modules => node["modules"] 
+    :modules => node["modules"]
   )
   notifies :start, "service[modules-load]"
   only_if { node.attribute?("modules") }

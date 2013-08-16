@@ -22,16 +22,6 @@ def path
   new_resource.path ? new_resource.path : "/etc/modules-load.d/#{new_resource.name}.conf"
 end
 
-def serializeOptions
-  if new_resource.options
-    output = ""
-    new_resource.options.each do |option, value|
-      output << " " + option + "=" + value
-    end
-    return output
-  end
-end
-
 action :save do
   template path do
     source "modules.conf.erb"
@@ -40,19 +30,11 @@ action :save do
     mode "0644"
     variables(
       :modules => new_resource.modules
-      )
+    )
     notifies :start, "service[modules-load]"
   end
   new_resource.updated_by_last_action(true)
 end
-
-#action :load do
-#  new_resource.modules.each do |module|
-#    execute "load module" do
-#      command "modprobe #{name} #{serializeOptions}"
-#    end
-#  end
-#end
 
 action :remove do
   file path do
@@ -66,4 +48,3 @@ action :remove do
   end
   new_resource.updated_by_last_action(true)
 end
-
